@@ -1,0 +1,14 @@
+/* Start by adding the base styles */
+@tailwind base;
+
+/* Then add component styles */
+@tailwind components;
+
+/* Finally, add utility styles */
+@tailwind utilities;
+
+/* Your custom styles go here */
+.my-custom-class {
+  /* Custom styles */
+}
+
