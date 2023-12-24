@@ -1,19 +1,19 @@
 console.log("YouTube Extension activated on this page.");
 
-chrome.runtime.sendMessage({message: "fetchData"}, response => {
-    if (response && response.data) {
-        console.log('Data received from background:', response.data);
-        // Call a function to render the content with the data
-        renderContent(response.data);
-    } else {
-        console.error('No data received');
-    }
-});
+function fetchDataAndUpdateOverlay() {
+    // Send a message to the background script to fetch data
+    chrome.runtime.sendMessage({message: "fetchData"}, response => {
+        if (response && response.data) {
+            console.log('Data received from background:', response.data);
+            // Now that you have data, call a function to update the overlay
+            updateOverlayContent(response.data);
+        } else {
+            console.error('No data received');
+        }
+    });
+}
 
-function renderContent(data) {
-window.addEventListener('load', () => {
-    if(true)
-    {
+function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
     if (videoPlayer && video) {
@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
-        const safeTitle = escapeHTML(data);
+        const safeTitle = escapeHTML("Hi how are you");
         // Define the HTML content for the overlay
         const htmlContent = `
         <div style="width: 80%; max-width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -75,12 +75,28 @@ window.addEventListener('load', () => {
             button.innerText = 'Click to Pause';
         }
         });
-    }
-    }
+             // Check every second
+        }
     
   
+}
+
+window.addEventListener('load', () => {
+    if(true) {
+        const video = document.querySelector('video');
+        if (video) {
+            const targetTime = 30; // in seconds
+            const checkTimeInterval = setInterval(() => {
+                if (video.currentTime >= targetTime) {
+                    clearInterval(checkTimeInterval);
+                    fetchDataAndUpdateOverlay(); // Fetch data and update the overlay when the time is right
+                }
+            }, 1000); // Check every second
+        }
+    }
 });
-  }
+
+  
 
   function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, 

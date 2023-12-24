@@ -17,7 +17,7 @@ chrome.action.onClicked.addListener((tab) => {
 
 function fetchData() {
     // Return the fetch promise
-    return fetch('https://bennycortese--activelearnendpoints-main-dev.modal.run/')
+    return fetch('https://jsonplaceholder.typicode.com/todos/1')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -34,11 +34,13 @@ function fetchData() {
       });
   }
 
+  
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (tab.url.includes("www.youtube.com/watch") && changeInfo.status === "complete") {
       fetchData(); // Fetch the data
     }
   });
+  
   
   // Listen for a message request from the content script
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
