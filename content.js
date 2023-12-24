@@ -16,6 +16,7 @@ function fetchDataAndUpdateOverlay() {
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
+    console.log('I am here, here is the data:', data.substring(9, 12));
     if (videoPlayer && video) {
         const overlay = document.createElement('div');
         overlay.style.position = 'absolute';
@@ -29,7 +30,7 @@ function updateOverlayContent(data) {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
-        const safeTitle = escapeHTML("Hi how are you");
+        const safeTitle = escapeHTML(data);
         // Define the HTML content for the overlay
         const htmlContent = `
         <div style="width: 80%; max-width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">

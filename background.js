@@ -17,7 +17,7 @@ chrome.action.onClicked.addListener((tab) => {
 
 function fetchData() {
     // Return the fetch promise
-    return fetch('https://jsonplaceholder.typicode.com/todos/1')
+    return fetch('https://bennycortese--activelearnendpoints-main-dev.modal.run/')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
