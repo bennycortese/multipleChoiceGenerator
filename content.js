@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
-        const safeTitle = escapeHTML(data['title']);
+        const safeTitle = escapeHTML(data);
         // Define the HTML content for the overlay
         const htmlContent = `
         <div style="width: 80%; max-width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
