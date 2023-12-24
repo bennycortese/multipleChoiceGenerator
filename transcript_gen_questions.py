@@ -1,5 +1,5 @@
 import modal
-from modal import Stub, web_endpoint
+from modal import Stub, web_endpoint # quick note, despite security issues data is still getting recieved, it just doesn't render and I think trying to fix that is more urgent
 
 bot_image = modal.Image.debian_slim().pip_install("openai")
 bot_image = bot_image.pip_install("numpy")
