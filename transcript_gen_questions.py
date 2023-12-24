@@ -8,13 +8,22 @@ bot_image = bot_image.pip_install("youtube_transcript_api")
 
 stub = modal.Stub("activeLearnEndpoints", image=bot_image)
 
+def break_into_chunk(transcript_chunks, left_index, right_index):
+    current_chunk = ""
+    for i in range(left_index, right_index):
+        inner_dict = transcript_chunks[i]
+        current_chunk += str(
+            inner_dict['text'] + " Start Position: " + str(inner_dict['start']) + ", " + "End Position: " + str(
+                inner_dict['start'] + inner_dict['duration']) + "\n")
+
+    return current_chunk
 
 @stub.function(secret=modal.Secret.from_name("my-openai-secret"))
 def complete_text(prompt):
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4-1106-preview",
+        model="gpt-3.5-turbo-1106",
         messages=[
             {"role": "system", "content": "You are an instructor."},
             {"role": "user", "content": prompt},
@@ -28,22 +37,33 @@ def complete_text(prompt):
 def main():
     from youtube_transcript_api import YouTubeTranscriptApi
     transcript_chunks = YouTubeTranscriptApi.get_transcript("2E0GHyz4Hk0", preserve_formatting=True)
-    big_transcript = ""
-    for inner_dict in transcript_chunks:
-        big_transcript += str(
-            inner_dict['text'] + " Start Position: " + str(inner_dict['start']) + ", " + "End Position: " + str(
-                inner_dict['start'] + inner_dict['duration']) + "\n")
 
-    prompt_one = """I'm going to give you a transcript with start and end positions. I would like you to give me five end locations where you think asking a question to the listener would be the most appropriate, and then the question with four multiple choice questions you would ask at that position. Focus on the "Analyze" component of bloom's taxonomy and try to get students to synthesize ideas more complexly when they answer these questions. Please be extremely careful to make the questions at a given position make sense with a viewer only having the knowledge from that timestamp and previous timestamps, not any information after that timestamp.
-Transcript: \n""" + big_transcript
+    number_of_elements = len(transcript_chunks)
+
+    first_chunk = break_into_chunk(transcript_chunks, 0, number_of_elements // 5)
+    second_chunk = break_into_chunk(transcript_chunks, number_of_elements // 5, (number_of_elements * 2) // 5)
+    third_chunk = break_into_chunk(transcript_chunks, (number_of_elements * 2) // 5, (number_of_elements * 3) // 5)
+    fourth_chunk = break_into_chunk(transcript_chunks, (number_of_elements * 3) // 5, (number_of_elements * 4) // 5)
+    fifth_chunk = break_into_chunk(transcript_chunks, (number_of_elements * 4) // 5, number_of_elements)
 
 
-    first_response = complete_text.remote(prompt_one)
+    question_prompt = """I'm going to give you a transcript with start and end positions. I would like you to give me the numerical value of the last End Position in this transcript. Then give me a question with four multiple choice questions you would ask at that position. Focus on the "Analyze" component of bloom's taxonomy and try to get students to synthesize ideas more complexly when they answer these questions. Please be extremely careful to make the questions at a given position make sense with a viewer only having the knowledge from that timestamp and previous timestamps, not any information after that timestamp.
+Transcript: \n"""
 
-    prompt_two = """I need you to take the following text and output/clean the response into the following format: 
+
+    #implement threading here for 5x faster response time
+    first_response = complete_text.remote(question_prompt + first_chunk)
+    second_response = complete_text.remote(question_prompt + second_chunk)
+    third_response = complete_text.remote(question_prompt + third_chunk)
+    fourth_response = complete_text.remote(question_prompt + fourth_chunk)
+    fifth_response = complete_text.remote(question_prompt + fifth_chunk)
+
+
+    prompt_two = """I need you to take the following of questions and output/clean the response into the following format: 
     \"Timestamp in float\" - \"Question\" - \"Answer Choice A\" - \"Answer Choice B\" - \"Answer Choice C\" - 
     \"Answer Choice D\" - \"Correct Answer\" Please say absolutely nothing besides doing this reformatting. Ok, 
-    here is the text: \n""" + first_response
+    here is are the questions: \n""" + "Question 1: " + first_response + "\n" + "Question 2: " + second_response + "\n" + \
+    "Question 3: " + third_response + "\n" + "Question 4: " + fourth_response + "\n" + "Question 5: " + fifth_response + "\n"
 
     return complete_text.remote(prompt_two)
 
@@ -62,4 +82,3 @@ Transcript: \n""" + big_transcript
 # print(text)
 
 
-# Press the green button in the gutter to run the script.
