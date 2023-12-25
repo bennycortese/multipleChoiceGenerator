@@ -15,9 +15,25 @@ chrome.action.onClicked.addListener((tab) => {
   }
 });
 
-function fetchData() {
-    // Return the fetch promise
-    return fetch('https://bennycortese--activelearnendpoints-main-dev.modal.run/')
+
+function fetchData(videoUrl) {
+    
+    const url = 'https://bennycortese--activelearnendpoints-flask-app-dev.modal.run/echo';
+
+
+    let match = videoUrl.match(/(?<=v=)[^&#]+/);
+
+    if (match) {
+        console.log(match[0]);  // Output: YNYMQv6GQX8
+    }
+    videoId = match[0]; 
+
+    console.log(videoId);
+
+    return fetch(url, { // Pass the URL
+        method: 'POST', // Set the method to POST
+        body: videoId, // Convert the JavaScript object to a JSON string
+      })
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -35,21 +51,18 @@ function fetchData() {
   }
 
   
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (tab.url.includes("www.youtube.com/watch") && changeInfo.status === "complete") {
-      fetchData(); // Fetch the data
+      fetchData(tab.url);
     }
   });
   
-  
-  // Listen for a message request from the content script
+  // Listen for messages from the content script
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "fetchData") {
-      fetchData().then(data => {
-        sendResponse({ data: data }); // Send the data back to the content script
-      }).catch(error => {
-        sendResponse({ error: error.toString() }); // Send error information back if needed
-      });
-      return true; // Keep the messaging channel open for sendResponse
+      fetchData(sender.tab.url)
+        .then(data => sendResponse({ data: data }))
+        .catch(error => sendResponse({ error: error.toString() }));
+      return true;  // indicates you wish to send a response asynchronously
     }
   });

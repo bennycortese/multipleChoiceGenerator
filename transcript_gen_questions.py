@@ -8,6 +8,7 @@ bot_image = bot_image.pip_install("numpy")
 bot_image = bot_image.pip_install("pandas")
 bot_image = bot_image.pip_install("youtube_transcript_api")
 bot_image = bot_image.pip_install("flask")
+bot_image = bot_image.pip_install("flask_cors")
 
 stub = modal.Stub("activeLearnEndpoints", image=bot_image)
 
@@ -40,13 +41,17 @@ def complete_text(prompt):
 @wsgi_app()
 def flask_app():
     from flask import Flask, request
+    from flask_cors import CORS
     from youtube_transcript_api import YouTubeTranscriptApi
 
     web_app = Flask(__name__)
+    CORS(web_app)
 
     @web_app.post("/echo")
     def home():
         video_id = request.get_data().decode('utf-8')
+
+        print(video_id)
 
         transcript_chunks = YouTubeTranscriptApi.get_transcript(video_id, preserve_formatting=True)
 

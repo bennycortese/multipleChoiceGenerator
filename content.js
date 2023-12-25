@@ -16,7 +16,8 @@ function fetchDataAndUpdateOverlay() {
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
-    console.log('I am here, here is the data:', data.substring(9, 12));
+    const myData = data.split("-");
+    console.log('I am here, here is the data:', data.split(""));
     if (videoPlayer && video) {
         const overlay = document.createElement('div');
         overlay.style.position = 'absolute';
@@ -34,25 +35,25 @@ function updateOverlayContent(data) {
         // Define the HTML content for the overlay
         const htmlContent = `
         <div style="width: 80%; max-width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #333; font-size: 24px; text-align: center; margin-bottom: 20px;">1. ${safeTitle}</h2>
+        <h2 style="color: #333; font-size: 24px; text-align: center; margin-bottom: 20px;">1. ${escapeHTML(myData[1])}</h2>
         <div style="margin-bottom: 10px;">
             <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="A" style="margin-right: 10px;"/> <span style="color: #333;"> A) London </span>
+            <input type="radio" name="option" value="A" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[2])} </span>
             </label>
         </div>
         <div style="margin-bottom: 10px;">
             <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="B" style="margin-right: 10px;"/> <span style="color: #333;"> B) Paris </span>
+            <input type="radio" name="option" value="B" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[3])} </span>
             </label>
         </div>
         <div style="margin-bottom: 10px;">
             <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="C" style="margin-right: 10px;"/> <span style="color: #333;"> C) Berlin </span>
+            <input type="radio" name="option" value="C" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[4])} </span>
             </label>
         </div>
         <div style="margin-bottom: 20px;">
             <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="D" style="margin-right: 10px;"/> <span style="color: #333;">D) Madrid</span>
+            <input type="radio" name="option" value="D" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[5])}</span>
             </label>
         </div>
         <button style="width: 100%; padding: 10px 20px; background-color: #3490dc; color: white; border: none; border-radius: 5px; cursor: pointer;">Click to Play/Pause</button>
