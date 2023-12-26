@@ -51,6 +51,7 @@ def flask_app():
     def home():
         video_id = request.get_data().decode('utf-8')
 
+        print("here: \n")
         print(video_id)
 
         transcript_chunks = YouTubeTranscriptApi.get_transcript(video_id, preserve_formatting=True)
