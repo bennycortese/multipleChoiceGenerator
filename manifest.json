@@ -18,7 +18,8 @@
     "*://*.youtube.com/*",
     "https://jsonplaceholder.typicode.com/todos/1",
     "https://bennycortese--activelearnendpoints-main-dev.modal.run/",
-    "https://bennycortese--activelearnendpoints-flask-app-dev.modal.run/echo"
+    "https://bennycortese--activelearnendpoints-flask-app-dev.modal.run/echo",
+    "https://bennycortese--activelearnendpoints-flask-app-dev.modal.run/*"
   ],
   "background": {
     "service_worker": "background.js"

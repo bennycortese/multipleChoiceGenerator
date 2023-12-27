@@ -51,7 +51,7 @@ def flask_app():
     def home():
         video_id = request.get_data().decode('utf-8')
 
-        print("Here is the data: \n")
+        print("here: \n")
         print(video_id)
 
         transcript_chunks = YouTubeTranscriptApi.get_transcript(video_id, preserve_formatting=True)
@@ -80,6 +80,9 @@ def flask_app():
             here is are the questions: \n""" + "Question 1: " + first_response + "\n" + "Question 2: " + second_response + "\n" + \
                      "Question 3: " + third_response + "\n" + "Question 4: " + fourth_response + "\n" + "Question 5: " + fifth_response + "\n"
 
+        actual_return_data = complete_text.remote(prompt_two)
+
+        print(actual_return_data)
         return complete_text.remote(prompt_two)
 
 

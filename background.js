@@ -38,7 +38,7 @@ function fetchData(videoUrl) {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
+        return response.text();
       })
       .then(data => {
         console.log('Data fetched', data);
