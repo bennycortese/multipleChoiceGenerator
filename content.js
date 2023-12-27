@@ -16,8 +16,8 @@ function fetchDataAndUpdateOverlay() {
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
-    const myData = data.split("-");
-    console.log('I am here, here is the data:', data.split(""));
+    const myData = data.split("-"); // NOTE FOR FUTURE - find a better delimiter because some questions may use '-' in the question
+    console.log('I am here, here is the data:', data.split("")); 
     if (videoPlayer && video) {
         const overlay = document.createElement('div');
         overlay.style.position = 'absolute';
@@ -68,15 +68,14 @@ function updateOverlayContent(data) {
 
         // Find the button in the overlay and add click event to play/pause video
         const button = overlay.querySelector('button');
-        button.addEventListener('click', () => {
-        if (!video.paused) {
-            video.pause();
-            button.innerText = 'Click to Play';
-        } else {
-            video.play();
-            button.innerText = 'Click to Pause';
-        }
-        });
+        video.pause();
+        //button.addEventListener('click', () => {
+        //if (!video.paused) {
+        //    button.innerText = 'Click to Play';
+        //} else {
+        //    button.innerText = 'Click to Pause';
+        //}
+        //});
              // Check every second
         }
     
