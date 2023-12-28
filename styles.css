@@ -48,9 +48,14 @@
     margin-right: 10px;
 }
 
-.selected-label {
-    background-color: yellow; /* Or any other color that indicates selection */
-    color: black; /* Make sure the text color contrasts with the background */
+.correct-selected-label {
+    background-color: green;
+    color: black;
+}
+
+.incorrect-selected-label {
+    background-color: red;
+    color: black;
 }
 
 .submit-btn {

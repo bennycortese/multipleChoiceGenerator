@@ -35,25 +35,51 @@ function checkAnswer(selectedOption, correctAnswer) {
     }
 }
 
-function setupOptionListeners() {
+function getSelectedOptionValue() {
+    // Get all radio buttons with the name 'option'
+    const options = document.querySelectorAll('input[type="radio"][name="option"]');
+  
+    // Loop over them to find which one is checked
+    for (const option of options) {
+      if (option.checked) {
+        return option.value; // This will be 'A', 'B', 'C', or 'D'
+      }
+    }
+  
+    // If none are selected, you might return undefined or a default value
+    return undefined;
+  }
+
+
+function setupOptionListeners(correctFirstQuestionAnswer) {
     const labels = document.querySelectorAll('.option-label');
     const radios = document.querySelectorAll('input[type=radio][name="option"]');
 
     radios.forEach(radio => {
         radio.addEventListener('change', () => {
-            // Clear all labels' selected state
-            labels.forEach(label => label.classList.remove('selected-label'));
+            const selectedValue = getSelectedOptionValue();
+            labels.forEach(label => label.classList.remove('correct-selected-label'));
+            labels.forEach(label => label.classList.remove('incorrect-selected-label'));
 
             // If the current radio button is checked, add the class to its label
             if (radio.checked) {
                 const parentLabel = radio.closest('.option-label');
-                if (parentLabel) {
-                    parentLabel.classList.add('selected-label');
+                if (parentLabel && selectedValue == correctFirstQuestionAnswer) {
+                    parentLabel.classList.add('correct-selected-label');
+                    //console.log(selectedValue);
+                    //console.log(correctFirstQuestionAnswer);
+                }
+                if (parentLabel && selectedValue != correctFirstQuestionAnswer) {
+                    parentLabel.classList.add('incorrect-selected-label');
+                    //console.log(selectedValue);
+                    //console.log(correctFirstQuestionAnswer);
                 }
             }
         });
     });
 }
+
+
 
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
@@ -100,8 +126,15 @@ function updateOverlayContent(data) {
         // Set the innerHTML of the overlay
         overlay.innerHTML = htmlContent;
 
+        //console.log(myData[5], "MYDATA6");
+
+        //console.log(escapeHTML(myData[5]).toUpperCase());
+
+        //console.log(escapeHTML(myData[5]).toUpperCase().trimStart());
         
-        const correctFirstQuestionAnswer = escapeHTML(myData[6]);
+        //console.log(escapeHTML(myData[5]).toUpperCase().trimStart()[0]);
+        
+        const correctFirstQuestionAnswer = escapeHTML(myData[5]).toUpperCase().trimStart()[0];
 
             
 
@@ -114,7 +147,7 @@ function updateOverlayContent(data) {
         // Append the overlay to the video player
         videoPlayer.appendChild(overlay);
 
-        setupOptionListeners();
+        setupOptionListeners(correctFirstQuestionAnswer);
 
         // Find the button in the overlay and add click event to play/pause video
         const button = overlay.querySelector('button');
@@ -156,6 +189,6 @@ window.addEventListener('load', () => {
             '<': '&lt;',
             '>': '&gt;',
             "'": '&#39;',
-            '"': '&quot;'
+            '"': ' '
         }[tag]));
 }
