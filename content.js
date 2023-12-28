@@ -13,12 +13,42 @@ function fetchDataAndUpdateOverlay() {
     });
 }
 
+function checkAnswer(selectedOption, correctAnswer) {
+    // Getting all the option labels
+    const optionLabels = document.querySelectorAll('label');
+    
+    // Resetting all option colors to default
+    optionLabels.forEach(label => {
+        label.style.backgroundColor = '#f9f9f9';
+    });
+
+    // Getting the parent label of the selected option
+    let parentLabel = selectedOption.parentElement;
+
+    // Check if the selected answer is correct
+    if (selectedOption.value === correctAnswer) {
+        // Change the color of the label to green for correct
+        parentLabel.style.backgroundColor = 'lightgreen';
+    } else {
+        // Change the color of the label to red for incorrect
+        parentLabel.style.backgroundColor = 'lightcoral';
+    }
+}
+
+
+
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
     const myData = data.split("-"); // NOTE FOR FUTURE - find a better delimiter because some questions may use '-' in the question
     console.log('I am here, here is the data:', data.split("")); 
     if (videoPlayer && video) {
+        var link = document.createElement("link");
+        link.href = chrome.runtime.getURL('styles.css');
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        document.getElementsByTagName("head")[0].appendChild(link);
+
         const overlay = document.createElement('div');
         overlay.style.position = 'absolute';
         overlay.style.zIndex = '1000';
@@ -34,34 +64,47 @@ function updateOverlayContent(data) {
         const safeTitle = escapeHTML(data);
         // Define the HTML content for the overlay
         const htmlContent = `
-        <div style="width: 80%; max-width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #333; font-size: 24px; text-align: center; margin-bottom: 20px;">1. ${escapeHTML(myData[1])}</h2>
-        <div style="margin-bottom: 10px;">
-            <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="A" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[2])} </span>
-            </label>
+        <div class="overlay">
+            <div class="content-box">
+                <h2 class="title">1. ${escapeHTML(myData[1])}</h2>
+                ${myData.slice(2, 6).map((option, index) => `
+                <div class="option">
+                    <label class="option-label">
+                    <input type="radio" name="option" value="${['A', 'B', 'C', 'D'][index]}"/> <span> ${escapeHTML(option)} </span>
+                    </label>
+                </div>
+                `).join('')}
+                <button class="submit-btn">Click to Play/Pause</button>
+            </div>
         </div>
-        <div style="margin-bottom: 10px;">
-            <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="B" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[3])} </span>
-            </label>
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="C" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[4])} </span>
-            </label>
-        </div>
-        <div style="margin-bottom: 20px;">
-            <label style="cursor: pointer; display: block; padding: 10px; background-color: #f9f9f9; border-radius: 5px;">
-            <input type="radio" name="option" value="D" style="margin-right: 10px;"/> <span style="color: #333;"> ${escapeHTML(myData[5])}</span>
-            </label>
-        </div>
-        <button style="width: 100%; padding: 10px 20px; background-color: #3490dc; color: white; border: none; border-radius: 5px; cursor: pointer;">Click to Play/Pause</button>
-        </div>
+        <script>
+        const options = document.getElementsByName('option');
+        const labels = document.querySelectorAll('.option-label');
+
+        options.forEach((option, index) => {
+            option.addEventListener('change', () => {
+                // Remove the class from all labels
+                labels.forEach(label => label.classList.remove('selected-label'));
+
+                // Add the class to the clicked label
+                if(option.checked) {
+                    labels[index].classList.add('selected-label');
+                }
+            });
+        });
+        </script>
         `;
 
         // Set the innerHTML of the overlay
         overlay.innerHTML = htmlContent;
+        
+        const correctFirstQuestionAnswer = escapeHTML(myData[6])
+
+        document.querySelectorAll('input[type=radio][name="option"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                checkAnswer(this, correctFirstQuestionAnswer);
+            });
+        });
 
         // Append the overlay to the video player
         videoPlayer.appendChild(overlay);

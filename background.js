@@ -1,10 +1,10 @@
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (tab.url.includes("youtube.com/watch")) {
-    chrome.action.enable(tabId);
-  } else {
-    chrome.action.disable(tabId);
-  }
-});
+    if (changeInfo.status === 'complete' && tab.url && tab.url.includes("youtube.com/watch")) {
+      chrome.action.enable(tabId);
+    } else {
+      chrome.action.disable(tabId);
+    }
+  });
 
 chrome.action.onClicked.addListener((tab) => {
   if (tab.url.includes("youtube.com/watch")) {
@@ -23,8 +23,11 @@ function fetchData(videoUrl) {
 
     let match = videoUrl.match(/(?<=v=)[^&#]+/);
 
-    if (match) {
+    if (match && match[0]) {
         console.log(match[0]);  // Output: YNYMQv6GQX8
+    } else {
+        console.error("No video ID found in URL");
+        return; // or handle this case appropriately
     }
     videoId = match[0]; 
 
