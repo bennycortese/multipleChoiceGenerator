@@ -35,7 +35,25 @@ function checkAnswer(selectedOption, correctAnswer) {
     }
 }
 
+function setupOptionListeners() {
+    const labels = document.querySelectorAll('.option-label');
+    const radios = document.querySelectorAll('input[type=radio][name="option"]');
 
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            // Clear all labels' selected state
+            labels.forEach(label => label.classList.remove('selected-label'));
+
+            // If the current radio button is checked, add the class to its label
+            if (radio.checked) {
+                const parentLabel = radio.closest('.option-label');
+                if (parentLabel) {
+                    parentLabel.classList.add('selected-label');
+                }
+            }
+        });
+    });
+}
 
 function updateOverlayContent(data) {
     const videoPlayer = document.querySelector('.html5-video-player');
@@ -69,45 +87,34 @@ function updateOverlayContent(data) {
                 <h2 class="title">1. ${escapeHTML(myData[1])}</h2>
                 ${myData.slice(2, 6).map((option, index) => `
                 <div class="option">
-                    <label class="option-label">
-                    <input type="radio" name="option" value="${['A', 'B', 'C', 'D'][index]}"/> <span> ${escapeHTML(option)} </span>
+                    <label class="option-label" for="option${index}">
+                        <input type="radio" id="option${index}" name="option" value="${['A', 'B', 'C', 'D'][index]}"/> <span> ${escapeHTML(option)} </span>
                     </label>
                 </div>
                 `).join('')}
                 <button class="submit-btn">Click to Play/Pause</button>
             </div>
         </div>
-        <script>
-        const options = document.getElementsByName('option');
-        const labels = document.querySelectorAll('.option-label');
-
-        options.forEach((option, index) => {
-            option.addEventListener('change', () => {
-                // Remove the class from all labels
-                labels.forEach(label => label.classList.remove('selected-label'));
-
-                // Add the class to the clicked label
-                if(option.checked) {
-                    labels[index].classList.add('selected-label');
-                }
-            });
-        });
-        </script>
         `;
 
         // Set the innerHTML of the overlay
         overlay.innerHTML = htmlContent;
-        
-        const correctFirstQuestionAnswer = escapeHTML(myData[6])
 
-        document.querySelectorAll('input[type=radio][name="option"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                checkAnswer(this, correctFirstQuestionAnswer);
-            });
-        });
+        
+        const correctFirstQuestionAnswer = escapeHTML(myData[6]);
+
+            
+
+        //document.querySelectorAll('input[type=radio][name="option"]').forEach(radio => {
+        //    radio.addEventListener('change', function() {
+        //        checkAnswer(this, correctFirstQuestionAnswer);
+        //    });
+        //});
 
         // Append the overlay to the video player
         videoPlayer.appendChild(overlay);
+
+        setupOptionListeners();
 
         // Find the button in the overlay and add click event to play/pause video
         const button = overlay.querySelector('button');
@@ -121,9 +128,9 @@ function updateOverlayContent(data) {
         //});
              // Check every second
         }
-    
   
 }
+
 
 window.addEventListener('load', () => {
     if(true) {
