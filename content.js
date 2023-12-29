@@ -118,7 +118,7 @@ function updateOverlayContent(data) {
                     </label>
                 </div>
                 `).join('')}
-                <button class="submit-btn">Click to Play/Pause</button>
+                <button class="submit-btn">Click to continue the video</button>
             </div>
         </div>
         `;
@@ -152,13 +152,15 @@ function updateOverlayContent(data) {
         // Find the button in the overlay and add click event to play/pause video
         const button = overlay.querySelector('button');
         video.pause();
-        //button.addEventListener('click', () => {
-        //if (!video.paused) {
-        //    button.innerText = 'Click to Play';
-        //} else {
-        //    button.innerText = 'Click to Pause';
-        //}
-        //});
+        button.addEventListener('click', () => {
+            if (videoPlayer && overlay) {
+                videoPlayer.removeChild(overlay);
+            }
+            if(video)
+            {
+                video.play();
+            }
+        });
              // Check every second
         }
   
