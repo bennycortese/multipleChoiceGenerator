@@ -7,21 +7,30 @@ function fetchDataAndSetOverlays() {
             console.log('Data received from background:', response.data);
             const video = document.querySelector('video');
 
-            const myData = response.data.split("-");
-            
-            const cleanedNumberString = myData[0].replace(/[^\d.]/g, "");
+            function setupIntervalChecks(video, data, intervalTimes) {
+                intervalTimes.forEach((intervalTime, index) => {
+                  const checkTimeInterval = setInterval(() => {
+                    if (video.currentTime >= intervalTime) {
+                      console.log(video.currentTime, " Row ", intervalTime);
+                      clearInterval(checkTimeInterval);
 
-            const firstIntervalTime = parseFloat(cleanedNumberString);
-
-            console.log("response data[0] ", cleanedNumberString, " ", firstIntervalTime);
-
-            const checkTimeInterval = setInterval(() => {
-                if (video.currentTime >= firstIntervalTime) {
-                    console.log(video.currentTime, " Row ", firstIntervalTime);
-                    clearInterval(checkTimeInterval);
-                    updateOverlayContent(response.data); // Fetch data and update the overlay when the time is right
-                }
-            }, 100); // Check every 1/10th of a second
+                      updateOverlayContent(data.slice(index * 7, (index + 1) * 7));
+                    }
+                  }, 100); // Check every 1/10th of a second
+                });
+              }
+              
+              const myData = response.data.split("{!}");
+              const intervalTimes = [
+                parseFloat(myData[0].replace(/[^\d.]/g, "")),
+                parseFloat(myData[7].replace(/[^\d.]/g, "")),
+                parseFloat(myData[14].replace(/[^\d.]/g, "")),
+                parseFloat(myData[21].replace(/[^\d.]/g, "")),
+                parseFloat(myData[28].replace(/[^\d.]/g, ""))
+              ];
+              
+              // Now call the setup function with the video, original data, and extracted interval times.
+              setupIntervalChecks(video, myData, intervalTimes);
         } else {
             console.error('No data received');
         }
@@ -96,11 +105,9 @@ function setupOptionListeners(correctFirstQuestionAnswer) {
 
 
 
-function updateOverlayContent(data) {
+function updateOverlayContent(myData) {
     const videoPlayer = document.querySelector('.html5-video-player');
     const video = document.querySelector('video');
-    const myData = data.split("-"); // NOTE FOR FUTURE - find a better delimiter because some questions may use '-' in the question
-    console.log('I am here, here is the data:', data.split("")); 
     if (videoPlayer && video) {
         var link = document.createElement("link");
         link.href = chrome.runtime.getURL('styles.css');
@@ -120,8 +127,6 @@ function updateOverlayContent(data) {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
-        const safeTitle = escapeHTML(data);
-        // Define the HTML content for the overlay
         const htmlContent = `
         <div class="overlay">
             <div class="content-box">
