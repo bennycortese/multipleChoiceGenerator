@@ -2,7 +2,6 @@ import modal
 from youtube_transcript_api import YouTubeTranscriptApi
 from modal import Image, Stub, wsgi_app
 
-
 bot_image = modal.Image.debian_slim().pip_install("openai")
 bot_image = bot_image.pip_install("numpy")
 bot_image = bot_image.pip_install("pandas")
@@ -22,6 +21,7 @@ def break_into_chunk(transcript_chunks, left_index, right_index):
                 inner_dict['start'] + inner_dict['duration']) + "\n")
 
     return current_chunk
+
 
 @stub.function(secret=modal.Secret.from_name("my-openai-secret"))
 def complete_text(prompt):
@@ -75,18 +75,30 @@ def flask_app():
         fifth_response = complete_text.remote(question_prompt + fifth_chunk)
 
         prompt_two = """I need you to take the following of questions and output/clean the response into the following format: 
-            \"Timestamp in float\" - \"Question\" - \"Answer Choice A\" - \"Answer Choice B\" - \"Answer Choice C\" - 
-            \"Answer Choice D\" - \"Correct Answer\" Please say absolutely nothing besides doing this reformatting. Ok, 
+            Timestamp in float {!} Question {!} Answer Choice A {!} Answer Choice B {!} Answer Choice C {!}
+            Answer Choice D {!} Correct Answer {!}. Here is an example of this to follow: 
+             150.12 {!} 
+             Based on the reactions of the cast, what are the different sensations they are experiencing after eating the spiked punch? {!}
+             Numbness, tingling, loss of feeling in the lips and throat {!} 
+             Spicy, salty, sweet {!}
+             Bitter, sour, hot {!}
+             Floral, earthy, fresh {!}
+             A {!}
+             
+             Please say absolutely nothing besides doing this reformatting. Ok, 
             here is are the questions: \n""" + "Question 1: " + first_response + "\n" + "Question 2: " + second_response + "\n" + \
                      "Question 3: " + third_response + "\n" + "Question 4: " + fourth_response + "\n" + "Question 5: " + fifth_response + "\n"
 
         actual_return_data = complete_text.remote(prompt_two)
 
-        print(actual_return_data)
-        return complete_text.remote(prompt_two)
+        if actual_return_data == "I'm sorry, but I cannot fulfill your request.":
+            actual_return_data = complete_text.remote(prompt_two)
 
+        print(actual_return_data)
+        return actual_return_data
 
     return web_app
+
 
 # torch.set_default_device("cuda")
 
