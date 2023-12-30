@@ -17,10 +17,17 @@ function fetchDataAndSetOverlays() {
                       updateOverlayContent(data.slice(index * 7, (index + 1) * 7));
                     }
                   }, 100); // Check every 1/10th of a second
-                });
+                }); 
               }
               
-              const myData = response.data.split("{!}");
+              const myData = response.data.split("\"!\"");
+              console.log(myData);
+              console.log(myData[0]);
+              console.log(myData[7]);
+              console.log(myData[14]);
+              console.log(myData[21]);
+              console.log(myData[28]);
+
               const intervalTimes = [
                 parseFloat(myData[0].replace(/[^\d.]/g, "")),
                 parseFloat(myData[7].replace(/[^\d.]/g, "")),
@@ -145,7 +152,7 @@ function updateOverlayContent(myData) {
 
         overlay.innerHTML = htmlContent;
         
-        const correctFirstQuestionAnswer = escapeHTML(myData[5]).toUpperCase().trimStart()[0];
+        const correctFirstQuestionAnswer = escapeHTML(myData[6]).toUpperCase().trimStart()[0]; // 6 instead of 5 actually makes it read the correct answer now instead of just D
 
         videoPlayer.appendChild(overlay);
 
