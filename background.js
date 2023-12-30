@@ -54,11 +54,11 @@ function fetchData(videoUrl) {
   }
 
   
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (tab.url.includes("www.youtube.com/watch") && changeInfo.status === "complete") {
-      fetchData(tab.url);
-    }
-  });
+  //chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  //  if (tab.url.includes("www.youtube.com/watch") && changeInfo.status === "complete") {
+  //    fetchData(tab.url);
+  //  }
+  //});
   
   // Listen for messages from the content script
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

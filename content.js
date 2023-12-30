@@ -1,12 +1,27 @@
 console.log("YouTube Extension activated on this page.");
 
-function fetchDataAndUpdateOverlay() {
+function fetchDataAndSetOverlays() {
     // Send a message to the background script to fetch data
     chrome.runtime.sendMessage({message: "fetchData"}, response => {
         if (response && response.data) {
             console.log('Data received from background:', response.data);
-            // Now that you have data, call a function to update the overlay
-            updateOverlayContent(response.data);
+            const video = document.querySelector('video');
+
+            const myData = response.data.split("-");
+            
+            const cleanedNumberString = myData[0].replace(/[^\d.]/g, "");
+
+            const firstIntervalTime = parseFloat(cleanedNumberString);
+
+            console.log("response data[0] ", cleanedNumberString, " ", firstIntervalTime);
+
+            const checkTimeInterval = setInterval(() => {
+                if (video.currentTime >= firstIntervalTime) {
+                    console.log(video.currentTime, " Row ", firstIntervalTime);
+                    clearInterval(checkTimeInterval);
+                    updateOverlayContent(response.data); // Fetch data and update the overlay when the time is right
+                }
+            }, 100); // Check every 1/10th of a second
         } else {
             console.error('No data received');
         }
@@ -123,28 +138,10 @@ function updateOverlayContent(data) {
         </div>
         `;
 
-        // Set the innerHTML of the overlay
         overlay.innerHTML = htmlContent;
-
-        //console.log(myData[5], "MYDATA6");
-
-        //console.log(escapeHTML(myData[5]).toUpperCase());
-
-        //console.log(escapeHTML(myData[5]).toUpperCase().trimStart());
-        
-        //console.log(escapeHTML(myData[5]).toUpperCase().trimStart()[0]);
         
         const correctFirstQuestionAnswer = escapeHTML(myData[5]).toUpperCase().trimStart()[0];
 
-            
-
-        //document.querySelectorAll('input[type=radio][name="option"]').forEach(radio => {
-        //    radio.addEventListener('change', function() {
-        //        checkAnswer(this, correctFirstQuestionAnswer);
-        //    });
-        //});
-
-        // Append the overlay to the video player
         videoPlayer.appendChild(overlay);
 
         setupOptionListeners(correctFirstQuestionAnswer);
@@ -161,7 +158,6 @@ function updateOverlayContent(data) {
                 video.play();
             }
         });
-             // Check every second
         }
   
 }
@@ -171,13 +167,7 @@ window.addEventListener('load', () => {
     if(true) {
         const video = document.querySelector('video');
         if (video) {
-            const targetTime = 30; // in seconds
-            const checkTimeInterval = setInterval(() => {
-                if (video.currentTime >= targetTime) {
-                    clearInterval(checkTimeInterval);
-                    fetchDataAndUpdateOverlay(); // Fetch data and update the overlay when the time is right
-                }
-            }, 1000); // Check every second
+            fetchDataAndSetOverlays();
         }
     }
 });
