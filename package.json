@@ -1,22 +1,28 @@
 {
   "name": "multiplechoicegenerator",
   "version": "1.0.0",
-  "description": "",
-  "main": "background.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel watch src/*",
+    "build": "parcel build src/* --dist-dir dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@parcel/config-webextension": "^2.10.3",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "youtube-transcript": "^1.0.6"
   },
   "type": "module",
   "devDependencies": {
-    "daisyui": "^4.4.23",
+    "buffer": "^6.0.3",
+    "parcel": "^2.10.3",
+    "process": "^0.11.10",
     "tailwindcss": "^3.4.0"
+  },
+  "description": "",
+  "parcel": {
+    "extends": "@parcel/config-webextension"
   }
 }

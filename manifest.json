@@ -4,11 +4,10 @@
   "version": "1.0",
   "description": "A plain Chrome extension.",
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
-  },
-  "icons": {
-    "128": "icon.png"
+    "default_popup": "dist/popup.html",
+    "default_icon": {
+      "128": "dist/icon.png"
+    }
   },
   "permissions": [
     "tabs",
@@ -23,13 +22,13 @@
     "https://bennycortese--activelearnendpoints-flask-app-dev.modal.run/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "dist/background.js"
   },
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/watch*"],
-      "css": ["styles.css"],
-      "js": ["content.js"]
+      "css": ["dist/styles.css"],
+      "js": ["dist/content.js"]
     }
   ]
 }
