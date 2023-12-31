@@ -1,3 +1,4 @@
+import './styles.css';
 console.log("YouTube Extension activated on this page.");
 
 function fetchDataAndSetOverlays() {
@@ -135,6 +136,7 @@ function updateOverlayContent(myData) {
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
         const htmlContent = `
+        <link rel="stylesheet" href="tailwind.css">
         <div class="overlay">
             <div class="content-box">
                 <h2 class="title">1. ${escapeHTML(myData[1])}</h2>
@@ -145,7 +147,7 @@ function updateOverlayContent(myData) {
                     </label>
                 </div>
                 `).join('')}
-                <button class="submit-btn">Click to continue the video</button>
+                <button class="button-3">Click to continue the video</button>
             </div>
         </div>
         `;
