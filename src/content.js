@@ -112,6 +112,22 @@ function setupOptionListeners(correctFirstQuestionAnswer) {
 }
 
 
+function renderSelectionButton() {
+    const htmlContent = `
+        <link rel="stylesheet" href="tailwind.css">
+        <div class="overlay">
+            <div class="content-box">
+                <div class="option">
+                    <label class=".radio-tile" for="option">
+                        <input type="radio" id="option" name="option" value=""/> <span> </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        `;
+}
+
+
 
 function updateOverlayContent(myData) {
     const videoPlayer = document.querySelector('.html5-video-player');
@@ -151,6 +167,8 @@ function updateOverlayContent(myData) {
             </div>
         </div>
         `;
+
+
 
         overlay.innerHTML = htmlContent;
         
