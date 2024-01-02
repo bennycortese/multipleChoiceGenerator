@@ -130,7 +130,7 @@
   }
   
   .radio-inputs > * {
-    margin: 6px;
+    margin: 2px;
   }
   
   .radio-input:checked + .radio-tile {
@@ -169,8 +169,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    min-height: 80px;
+    width: 40px;
+    min-height: 20px;
     border-radius: 0.5rem;
     border: 2px solid #b5bfd9;
     background-color: #fff;
@@ -184,13 +184,13 @@
     content: "";
     position: absolute;
     display: block;
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.375rem;
+    height: 0.1875rem;
     border: 2px solid #b5bfd9;
     background-color: #fff;
     border-radius: 50%;
-    top: 0.25rem;
-    left: 0.25rem;
+    top: 0.0625rem;
+    left: 0.1250rem;
     opacity: 0;
     transform: scale(0);
     transition: 0.25s ease;
@@ -206,8 +206,8 @@
   }
   
   .radio-icon svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1rem;
+    height: 0.5rem;
     fill: #494949;
   }
   
@@ -215,7 +215,7 @@
     color: #707070;
     transition: 0.375s ease;
     text-align: center;
-    font-size: 13px;
+    font-size: 9px;
   }
   
   .radio-input {
@@ -226,5 +226,5 @@
     overflow: hidden;
     position: absolute;
     white-space: nowrap;
-    width: 1px;
+    width: 2px;
   }

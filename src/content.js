@@ -148,8 +148,35 @@ function updateOverlayContent(myData) {
                 </div>
                 `).join('')}
                 <button class="button-3">Click to continue the video</button>
+                <div class="radio-inputs">
+		<label>
+			<input class="radio-input" type="radio" name="engine">
+				<span class="radio-tile">
+					<span class="radio-icon">
+                    <img src="./icon.png">
+					</span>
+					<span class="radio-label">Bicycle</span>
+				</span>
+		</label>
+		<label>
+			<input checked="" class="radio-input" type="radio" name="engine">
+			<span class="radio-tile">
+				<span class="radio-icon">
+                <img src="./icon.png">
+				</span>
+				<span class="radio-label">Motorbike</span>
+			</span>
+		</label>
+		<label>
+			<input class="radio-input" type="radio" name="engine">
+			<span class="radio-tile">
+				<span class="radio-icon">
+    			<img src="./icon.png">
+				</span>
+				<span class="radio-label">Car</span>
+			</span>
+		</label>
             </div>
-        </div>
         `;
 
         overlay.innerHTML = htmlContent;
