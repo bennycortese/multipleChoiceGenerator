@@ -135,6 +135,8 @@ function updateOverlayContent(myData) {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
+        document.getElementById('imageElementId').src = chrome.runtime.getURL('quizlet.jpg');
+
         const htmlContent = `
         <link rel="stylesheet" href="tailwind.css">
         <div class="overlay">
@@ -153,7 +155,7 @@ function updateOverlayContent(myData) {
 			<input class="radio-input" type="radio" name="engine">
 				<span class="radio-tile">
 					<span class="radio-icon">
-                    <img src="./icon.png">
+                    <img src="quizlet.jpg" alt="Quizlet Image">
 					</span>
 					<span class="radio-label">Bicycle</span>
 				</span>
@@ -162,7 +164,7 @@ function updateOverlayContent(myData) {
 			<input checked="" class="radio-input" type="radio" name="engine">
 			<span class="radio-tile">
 				<span class="radio-icon">
-                <img src="./icon.png">
+                <img src="quizlet.jpg" alt="Quizlet Image">
 				</span>
 				<span class="radio-label">Motorbike</span>
 			</span>
@@ -171,7 +173,7 @@ function updateOverlayContent(myData) {
 			<input class="radio-input" type="radio" name="engine">
 			<span class="radio-tile">
 				<span class="radio-icon">
-    			<img src="./icon.png">
+    			<img src="quizlet.jpg" alt="Quizlet Image">
 				</span>
 				<span class="radio-label">Car</span>
 			</span>
