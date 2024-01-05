@@ -30,14 +30,12 @@
 
 .option {
     margin-bottom: 10px;
-    color: blue;
 }
 
 .option-label {
     cursor: pointer;
     display: block;
     padding: 10px;
-    background-color: blue;
     border-radius: 5px;
     color: black;
 }
@@ -81,7 +79,7 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  padding: 6px 16px;
+  /* padding: 6px 16px; */
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -90,6 +88,9 @@
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
+  width: 100%; /* Full width of the parent */
+  padding: 10px 20px;
+  margin: 0; /* Reset any default margins */
 }
 
 .button-3:focus:not(:focus-visible):not(.focus-visible) {

@@ -135,7 +135,7 @@ function updateOverlayContent(myData) {
         overlay.style.alignItems = 'center';
         overlay.style.backgroundColor = 'rgba(0,0,0,0.75)'; // Darker semi-transparent background
 
-        document.getElementById('imageElementId').src = chrome.runtime.getURL('quizlet.jpg');
+        //document.getElementById('imageElementId').src = chrome.runtime.getURL('quizlet.jpg');
 
         const htmlContent = `
         <link rel="stylesheet" href="tailwind.css">
@@ -150,34 +150,6 @@ function updateOverlayContent(myData) {
                 </div>
                 `).join('')}
                 <button class="button-3">Click to continue the video</button>
-                <div class="radio-inputs">
-		<label>
-			<input class="radio-input" type="radio" name="engine">
-				<span class="radio-tile">
-					<span class="radio-icon">
-                    <img src="quizlet.jpg" alt="Quizlet Image">
-					</span>
-					<span class="radio-label">Bicycle</span>
-				</span>
-		</label>
-		<label>
-			<input checked="" class="radio-input" type="radio" name="engine">
-			<span class="radio-tile">
-				<span class="radio-icon">
-                <img src="quizlet.jpg" alt="Quizlet Image">
-				</span>
-				<span class="radio-label">Motorbike</span>
-			</span>
-		</label>
-		<label>
-			<input class="radio-input" type="radio" name="engine">
-			<span class="radio-tile">
-				<span class="radio-icon">
-    			<img src="quizlet.jpg" alt="Quizlet Image">
-				</span>
-				<span class="radio-label">Car</span>
-			</span>
-		</label>
             </div>
         `;
 
@@ -227,3 +199,35 @@ window.addEventListener('load', () => {
             '"': ' '
         }[tag]));
 }
+
+
+/*
+<div class="radio-inputs">
+		<label>
+			<input class="radio-input" type="radio" name="engine">
+				<span class="radio-tile">
+					<span class="radio-icon">
+                    <img src="quizlet.jpg" alt="Quizlet Image">
+					</span>
+					<span class="radio-label">Bicycle</span>
+				</span>
+		</label>
+		<label>
+			<input checked="" class="radio-input" type="radio" name="engine">
+			<span class="radio-tile">
+				<span class="radio-icon">
+                <img src="quizlet.jpg" alt="Quizlet Image">
+				</span>
+				<span class="radio-label">Motorbike</span>
+			</span>
+		</label>
+		<label>
+			<input class="radio-input" type="radio" name="engine">
+			<span class="radio-tile">
+				<span class="radio-icon">
+    			<img src="quizlet.jpg" alt="Quizlet Image">
+				</span>
+				<span class="radio-label">Car</span>
+			</span>
+		</label>
+*/
