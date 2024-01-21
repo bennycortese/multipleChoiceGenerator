@@ -28,7 +28,7 @@ def complete_text(prompt):
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo-1106",
+        model="gpt-3.5-turbo-1106", # note, test this with gpt-4 for quality improvements
         messages=[
             {"role": "system", "content": "You are an instructor."},
             {"role": "user", "content": prompt},
